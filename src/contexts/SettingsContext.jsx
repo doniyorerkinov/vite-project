@@ -4,10 +4,14 @@ export const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
   // 'navbar' or 'sidebar'
-  const [layout, setLayout] = useState("navbar");
-
+  let navber = localStorage.getItem('navbar')
+  if(!navber) {
+    localStorage.setItem('navbar', 'navbar')
+  }
+  const [layout, setLayout] = useState(localStorage.getItem('navbar') || "navbar");
   const toggleLayout = () => {
     setLayout((prev) => (prev === "navbar" ? "sidebar" : "navbar"));
+    localStorage.setItem('navbar', layout)
   };
 
   return (

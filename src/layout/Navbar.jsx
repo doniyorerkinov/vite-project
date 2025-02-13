@@ -4,9 +4,9 @@ import { Link } from "react-router";
 function Navbar() {
   return (
     <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-      <div className="text-xl font-bold">My App</div>
+      <Link to="/" className="text-xl font-bold">My App</Link>
       <div className="space-x-4">
-        <Link to="/" className="hover:text-gray-300">
+        <Link to="/todos" className="hover:text-gray-300">
           Todos
         </Link>
         {/* Add more links for other APIs/pages here */}
