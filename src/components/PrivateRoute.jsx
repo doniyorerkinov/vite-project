@@ -6,11 +6,6 @@ const PrivateRoute = ({ children }) => {
   // const { user } = useContext(AuthContext);
   const storedUser = localStorage.getItem('user');
 
-  if (!storedUser) {
-    // If no user found, redirect to login page.
-    return <Navigate to="/login" replace />;
-  }
-
   return children;
 };
 
