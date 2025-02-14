@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   // Function to perform login (using dummyjson API)
   const login = async (username, password) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
