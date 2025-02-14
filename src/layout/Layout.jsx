@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { SettingsContext } from '../contexts/SettingsContext';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import { Settings } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const { layout, toggleLayout } = useContext(SettingsContext);
@@ -23,13 +24,15 @@ const Layout = ({ children }) => {
           </aside>
         )}
 
-        <main className={`flex-1 relative p-4 ${layout === 'sidebar' ? 'ml-64' : ''}`}>
-          <div className="flex justify-end absolute right-0">
+        <main
+          className={`flex-1 relative p-4 ${layout === 'sidebar' ? 'ml-64' : ''}`}
+        >
+          <div className="flex justify-end absolute bottom-4 right-4">
             <button
               onClick={toggleLayout}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+              className="bg-blue-500 hover:bg-blue-600 text-white size-12 flex justify-center items-center rounded-full shadow-sm"
             >
-              Switch Layout
+              <Settings />
             </button>
           </div>
           {children}

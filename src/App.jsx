@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Import Navigate
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom'; // Import Navigate
 import Layout from './layout/Layout';
 import TodoList from './pages/Todos/TodoList';
 import TodoDetail from './pages/Todos/TodoDetail';
@@ -19,10 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
 
             {/* Redirect root path ("/") to "/dashboard" */}
-            <Route
-              path="/"
-              element={<Navigate to="/dashboard" replace />}
-            />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
             {/* Protected routes */}
             <Route

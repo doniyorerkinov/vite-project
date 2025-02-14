@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router';
 
 function TodoDetail() {
   const { id } = useParams();
@@ -23,7 +23,7 @@ function TodoDetail() {
         <strong>Task:</strong> {todo.todo}
       </p>
       <p className="mb-2">
-        <strong>Completed:</strong> {todo.completed ? "Yes" : "No"}
+        <strong>Completed:</strong> {todo.completed ? 'Yes' : 'No'}
       </p>
       <p className="mb-2">
         <strong>User ID:</strong> {todo.userId}

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -20,14 +20,15 @@ function TodoList() {
 
         // Filter out duplicates before appending new todos
         const newTodos = data.todos.filter(
-          (newTodo) => !todos.some((existingTodo) => existingTodo.id === newTodo.id)
+          (newTodo) =>
+            !todos.some((existingTodo) => existingTodo.id === newTodo.id)
         );
 
         setTodos((prevTodos) => [...prevTodos, ...newTodos]); // Append only unique todos
         setSkip((prevSkip) => prevSkip + limit); // Update the skip value for the next fetch
         setTotal(data.total);
       } catch (error) {
-        console.error("Error fetching todos:", error);
+        console.error('Error fetching todos:', error);
       } finally {
         setLoading(false);
       }
@@ -50,8 +51,8 @@ function TodoList() {
         fetchTodos();
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup event listener
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // Cleanup event listener
   }, [loading]);
 
   return (

@@ -20,10 +20,10 @@ export const AuthProvider = ({ children }) => {
           password, // or hardcode 'emilyspass'
           expiresInMins: 30,
         }),
-        credentials: 'include'
+        credentials: 'include',
       });
       const data = await res.json();
-      
+
       // Check for a token or similar property in the response
       if (data && data.accessToken) {
         setUser(data);
