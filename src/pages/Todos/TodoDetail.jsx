@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function TodoDetail() {
   const { id } = useParams();
