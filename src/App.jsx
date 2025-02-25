@@ -1,49 +1,58 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom'; // Import Navigate
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './layout/Layout';
+import PrivateRoute from './components/PrivateRoute';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { AuthProvider } from './contexts/AuthContext';
+
+// Pages
 import TodoList from './pages/Todos/TodoList';
 import TodoDetail from './pages/Todos/TodoDetail';
 import Login from './pages/Login';
 import Dashboard from './pages/index';
-import PrivateRoute from './components/PrivateRoute';
-import { SettingsProvider } from './contexts/SettingsContext';
-import { AuthProvider } from './contexts/AuthContext';
+import Orders from './pages/Orders/index';
+
+const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    element: (
+      <PrivateRoute>
+        <Layout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: '/',
+        element: <Dashboard />,
+        handle: { title: "Dashboard" },
+      },
+      {
+        path: '/todos',
+        element: <TodoList />,
+        handle: { title: "Todos" },
+      },
+      {
+        path: '/todo/:id',
+        element: <TodoDetail />,
+        handle: { title: "Todo Detail" },
+      },
+      {
+        path: '/orders',
+        element: <Orders />,
+        handle: { title: "Orders" },
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
     <AuthProvider>
       <SettingsProvider>
-        <Router>
-          <Routes>
-            {/* Public login page */}
-            <Route path="/login" element={<Login />} />
-
-            {/* Redirect root path ("/") to "/dashboard" */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
-            {/* Protected routes */}
-            <Route
-              path="/*"
-              element={
-                <PrivateRoute>
-                  <Layout>
-                    <Routes>
-                      <Route path="/dashboard" index element={<Dashboard />} />
-                      <Route path="/todos" element={<TodoList />} />
-                      <Route path="/todo/:id" element={<TodoDetail />} />
-                      {/* Additional protected routes can be added here */}
-                    </Routes>
-                  </Layout>
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </Router>
+        <RouterProvider router={router} />
       </SettingsProvider>
     </AuthProvider>
   );
