@@ -16,7 +16,7 @@ function Sidebar() {
             to={to}
             className={({ isActive }) =>
               `flex justify-start gap-4 font-medium text-primary px-4 py-3 rounded-md ${
-                isActive ? "bg-primary_bg" : ""
+                isActive ? "bg-primary-bg" : ""
               }`
             }
           >

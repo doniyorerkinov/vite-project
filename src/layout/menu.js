@@ -1,4 +1,4 @@
-import { House, Truck } from "lucide-react";
+import { House, ClipboardList, FileText, Users, Contact } from "lucide-react";
 
 export const links = [
     {
@@ -7,8 +7,23 @@ export const links = [
       Icon: House,
     },
     {
+      to: '/menu',
+      label: 'Menu',
+      Icon: FileText,
+    },
+    {
       to: '/orders',
       label: 'Orders',
-      Icon: Truck,
+      Icon: ClipboardList,
+    },
+    {
+      to: '/client',
+      label: 'Client',
+      Icon: Users,
+    },
+    {
+      to: '/employees',
+      label: 'Employees',
+      Icon: Contact,
     },
   ];

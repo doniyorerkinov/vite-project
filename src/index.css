@@ -2,6 +2,38 @@
 
 @theme {
     --color-primary: #2A3663;
-    --color-primary_bg: #f4f3f0;
+    --color-primary-bg: #f4f3f0;
     --color-inactive: #c8c3b5;
+    --color-inactive-yellow: #92866a;
+    --color-primary-green: #006160;
   }
+
+
+  /* Apply globally */
+* {
+  scrollbar-color: #006160 transparent; /* Fallback for Firefox */
+  scrollbar-width: thin; /* Fallback for Firefox */
+}
+
+/* Custom scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the vertical scrollbar */
+  height: 12px; /* Height of the horizontal scrollbar */
+  background: none;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #006160; /* Color of the scrollbar thumb */
+  border-radius: 16px; /* Rounded corners for the thumb */
+  border: 2px solid transparent; /* Optional: Adds a border around the thumb */
+  background-clip: content-box; /* Ensures the border doesn't overlap the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #004b4a; /* Darker shade on hover */
+}

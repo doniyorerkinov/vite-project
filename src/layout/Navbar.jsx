@@ -16,7 +16,7 @@ function Navbar() {
   }, [location.pathname]); // Now the effect runs whenever the route changes
 
   return (
-    <nav className="bg-white text-primary font-semibold text-lg p-4 flex justify-start items-center">
+    <nav className="bg-white text-primary border-b border-inactive-yellow font-semibold text-lg p-4 flex justify-start items-center">
         <span>
            {label}
           </span>

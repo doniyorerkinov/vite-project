@@ -6,11 +6,12 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import { AuthProvider } from './contexts/AuthContext';
 
 // Pages
-import TodoList from './pages/Todos/TodoList';
-import TodoDetail from './pages/Todos/TodoDetail';
 import Login from './pages/Login';
-import Dashboard from './pages/index';
+import Dashboard from './pages/Dashboard/index';
 import Orders from './pages/Orders/index';
+import Menu from "./pages/Menu/index"
+import Client from "./pages/Client/index"
+import Employees from "./pages/Employees/index"
 
 const router = createBrowserRouter([
   {
@@ -30,19 +31,24 @@ const router = createBrowserRouter([
         handle: { title: "Dashboard" },
       },
       {
-        path: '/todos',
-        element: <TodoList />,
-        handle: { title: "Todos" },
-      },
-      {
-        path: '/todo/:id',
-        element: <TodoDetail />,
-        handle: { title: "Todo Detail" },
+        path: '/menu',
+        element: <Menu />,
+        handle: { title: "Menu" },
       },
       {
         path: '/orders',
         element: <Orders />,
         handle: { title: "Orders" },
+      },
+      {
+        path: '/client',
+        element: <Client />,
+        handle: { title: "Client" },
+      },
+      {
+        path: '/employees',
+        element: <Employees />,
+        handle: { title: "Employees" },
       },
     ],
   },

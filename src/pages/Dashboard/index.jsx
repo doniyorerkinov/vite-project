@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import DashboardCard from '../components/UI/DashboardCard';
+import DashboardCard from '../../components/UI/DashboardCard';
 import { Home, Settings, Users, FileText, BarChart2 } from 'lucide-react';
 
 function Dashboard() {
