@@ -7,12 +7,17 @@ const Table = ({ headers, keys, data, onRowClick, actions = [] }) => {
         <thead className="bg-primary-bg">
           <tr>
             {headers.map((header, index) => (
-              <th key={index} className="px-4 py-2 text-left font-medium text-gray-700">
+              <th
+                key={index}
+                className="px-4 py-2 text-left font-medium text-gray-700"
+              >
                 {header}
               </th>
             ))}
             {actions.length > 0 && (
-              <th className="px-4 py-2 text-left font-medium text-gray-700">Actions</th>
+              <th className="px-4 py-2 text-left font-medium text-gray-700">
+                Actions
+              </th>
             )}
           </tr>
         </thead>
@@ -41,7 +46,7 @@ const Table = ({ headers, keys, data, onRowClick, actions = [] }) => {
                 );
               })}
               {actions.length > 0 && (
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 flex items-center gap-2">
                   {actions.map((action, aIndex) => (
                     <button
                       key={aIndex}

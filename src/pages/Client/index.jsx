@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Table from '../../components/Base/Table';
 import Breadcrumbs from '../../components/Breadcumbs';
-import ApiService from '../../services/ApiService'; // Import the ApiService
-import Pagination from '../../components/Base/Pagination'; // Import the Pagination component
+import ApiService from '../../services/ApiService';
+import Pagination from '../../components/Base/Pagination';
+import ClientEdit from './Edit';
+import { Edit, Plus, Trash } from 'lucide-react';
+import Loader from '../../components/Base/Loader';
 
 const Clients = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // Current page number
-  const [totalRecords, setTotalRecords] = useState(0); // Total number of records
-  const limit = 10; // Number of records per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentClient, setCurrentClient] = useState(null);
+  const limit = 10;
 
-  // Fetch employees using ApiService with pagination
   const fetchEmployees = async (page) => {
     setLoading(true);
     try {
-      const skip = (page - 1) * limit; // Calculate the skip value based on the current page
+      const skip = (page - 1) * limit;
       const data = await ApiService.get(`/users?limit=${limit}&skip=${skip}`);
-      setTableData(data.users); // Extract the users array from the response
-      setTotalRecords(data.total); // Set the total number of records
+      setTableData(data.users);
+      setTotalRecords(data.total);
     } catch (error) {
       console.error('Error fetching employees:', error);
     } finally {
@@ -27,86 +33,121 @@ const Clients = () => {
   };
 
   useEffect(() => {
-    fetchEmployees(currentPage); // Fetch data for the current page
-  }, [currentPage]);
+    fetchEmployees(currentPage);
+  }, [currentPage]); // Removed fetchEmployees from dependencies
 
-  // Handle page change
   const handlePageChange = (page) => {
-    setCurrentPage(page); // Update the current page
+    setCurrentPage(page);
   };
 
-  // Add a new employee using ApiService
-  const handleAdd = async () => {
-    const firstName = prompt('Enter first name:');
-    if (!firstName) return;
-    const lastName = prompt('Enter last name:');
-    if (!lastName) return;
-    const email = prompt('Enter email:');
-    if (!email) return;
+  const handleAdd = () => {
+    setCurrentClient(null);
+    setIsModalOpen(true);
+  };
 
+  const handleEdit = (client) => {
+    setCurrentClient(client);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async (formData) => {
     try {
-      const newUser = await ApiService.post('/users/add', { firstName, lastName, email });
-      setTableData((prev) => [...prev, newUser]);
+      if (currentClient) {
+        // Edit existing client
+        const updatedClient = await ApiService.put(
+          `/users/${currentClient.id}`,
+          formData
+        );
+        setTableData((prev) =>
+          prev.map((client) =>
+            client.id === currentClient.id ? updatedClient : client
+          )
+        );
+      } else {
+        // Add new client
+        const newClient = await ApiService.post('/users/add', formData);
+        setTableData((prev) => [...prev, newClient]);
+      }
     } catch (error) {
-      console.error('Error adding employee:', error);
+      console.error('Error saving client:', error);
     }
   };
 
-  // Define table headers and keys
   const headers = ['Client Name', 'Birth Date', 'Phone', 'Role', 'Rating'];
-  const keys = ['firstName',  'birthDate', 'phone', 'role', 'rating'];
+  const keys = ['firstName', 'birthDate', 'phone', 'role', 'rating'];
 
-  // Define actions for each row
   const actions = [
-    { label: 'Edit', onClick: (rowData) => console.log('Edit:', rowData) },
-    { label: 'Delete', onClick: (rowData) => console.log('Delete:', rowData) },
+    {
+      label: <Edit className="text-primary-green" size={20} />,
+      onClick: (rowData) => handleEdit(rowData),
+    },
+    {
+      label: <Trash className="text-red-500" size={20} />,
+      onClick: async (rowData) => {
+        if (window.confirm('Are you sure you want to delete this client?')) {
+          try {
+            await ApiService.delete(`/users/${rowData.id}`);
+            setTableData((prev) =>
+              prev.filter((client) => client.id !== rowData.id)
+            );
+          } catch (error) {
+            console.error('Error deleting client:', error);
+          }
+        }
+      },
+    },
   ];
 
-  // Calculate total pages
   const totalPages = Math.ceil(totalRecords / limit);
 
   return (
     <div>
       <Breadcrumbs>
         <button
-          className="bg-primary-green text-white px-4 py-2 rounded hover:bg-primary-green/80 cursor-pointer"
+          className="bg-primary-green !text-white flex items-center gap-4 px-4 py-2 rounded hover:bg-primary-green/80 cursor-pointer"
           onClick={handleAdd}
         >
-          Add Employee
+          <Plus size={20} />
+          Add Client
         </button>
       </Breadcrumbs>
 
       {loading ? (
-        <div className='min-h-60'>
-        <p>Loading...</p>
+        <div className="min-h-60 w-full flex justify-center items-center scale-150">
+          <Loader />
         </div>
       ) : (
         <>
-            {/* Table */}
-            <Table
-              headers={headers}
-              keys={keys}
-              data={tableData}
-              actions={actions}
-              onRowClick={(rowData) => console.log('Row clicked:', rowData)}
-            />
-
+          <Table
+            headers={headers}
+            keys={keys}
+            data={tableData}
+            actions={actions}
+            onRowClick={(rowData) => console.log('Row clicked:', rowData)}
+          />
         </>
       )}
-          {/* Showing X of Y items */}
-          <div className="flex justify-between items-center mb-4 bg-white p-4">
-            <span className="text-gray-700">
-              {Math.min((currentPage - 1) * limit + 1, totalRecords)}-
-              {Math.min(currentPage * limit, totalRecords)} of {totalRecords} Clients
-            </span>
 
-            {/* Pagination Component */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
+      <div className="flex justify-between items-center mb-4 bg-white p-4">
+        <span className="text-gray-700">
+          {Math.min((currentPage - 1) * limit + 1, totalRecords)}-
+          {Math.min(currentPage * limit, totalRecords)} of {totalRecords}{' '}
+          Clients
+        </span>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
+
+      <ClientEdit
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        client={currentClient}
+        onSave={handleSave}
+      />
     </div>
   );
 };

@@ -6,10 +6,16 @@ const Breadcrumbs = ({ children }) => {
   const pathnames = location.pathname.split('/').filter((x) => x);
 
   return (
-    <nav className="p-4 text-sm flex justify-between items-center bg-white" aria-label="breadcrumb">
+    <nav
+      className="p-4 text-sm flex justify-between items-center bg-white"
+      aria-label="breadcrumb"
+    >
       <ol className="list-reset flex flex-row items-center">
         <li>
-          <Link to="/" className="text-inactive-yellow hover:text-inactive-yellow/90">
+          <Link
+            to="/"
+            className="text-inactive-yellow hover:text-inactive-yellow/90"
+          >
             Home
           </Link>
         </li>
@@ -22,7 +28,10 @@ const Breadcrumbs = ({ children }) => {
               {isLast ? (
                 <span className="text-gray-500">{name}</span>
               ) : (
-                <Link to={routeTo} className="text-inactive-yellow hover:text-inactive-yellow/90">
+                <Link
+                  to={routeTo}
+                  className="text-inactive-yellow hover:text-inactive-yellow/90"
+                >
                   {name}
                 </Link>
               )}
@@ -30,8 +39,8 @@ const Breadcrumbs = ({ children }) => {
           );
         })}
       </ol>
-        {/* Render custom content passed from the parent */}
-        {children && <li className="flex items-center ml-2">{children}</li>}
+      {/* Render custom content passed from the parent */}
+      {children && <li className="flex items-center ml-2">{children}</li>}
     </nav>
   );
 };

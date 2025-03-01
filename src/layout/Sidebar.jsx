@@ -16,13 +16,13 @@ function Sidebar() {
             to={to}
             className={({ isActive }) =>
               `flex justify-start gap-4 font-medium text-primary px-4 py-3 rounded-md ${
-                isActive ? "bg-primary-bg" : ""
+                isActive ? 'bg-primary-bg' : ''
               }`
             }
           >
             {({ isActive }) => (
               <>
-                <Icon className={isActive ? "text-primary" : "text-inactive"} />
+                <Icon className={isActive ? 'text-primary' : 'text-inactive'} />
                 {label}
               </>
             )}

@@ -14,7 +14,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={i}
             className={`px-3 py-1 rounded ${
-              currentPage === i ? 'bg-primary-green text-white' : 'bg-gray-200 hover:bg-gray-300'
+              currentPage === i
+                ? 'bg-primary-green !text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => onPageChange(i)}
           >
@@ -35,7 +37,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={1}
             className={`px-3 py-1 rounded ${
-              currentPage === 1 ? 'bg-primary-green text-white' : 'bg-gray-200 hover:bg-gray-300'
+              currentPage === 1
+                ? 'bg-primary-green !text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => onPageChange(1)}
           >
@@ -44,7 +48,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         );
 
         if (leftSiblingIndex > 2) {
-          buttons.push(<span key="left-ellipsis" className="px-3 py-1">...</span>);
+          buttons.push(
+            <span key="left-ellipsis" className="px-3 py-1">
+              ...
+            </span>
+          );
         }
       }
 
@@ -53,7 +61,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={i}
             className={`px-3 py-1 rounded ${
-              currentPage === i ? 'bg-primary-green text-white' : 'bg-gray-200 hover:bg-gray-300'
+              currentPage === i
+                ? 'bg-primary-green !text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => onPageChange(i)}
           >
@@ -64,14 +74,20 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
       if (shouldShowRightEllipsis) {
         if (rightSiblingIndex < totalPages - 1) {
-          buttons.push(<span key="right-ellipsis" className="px-3 py-1">...</span>);
+          buttons.push(
+            <span key="right-ellipsis" className="px-3 py-1">
+              ...
+            </span>
+          );
         }
 
         buttons.push(
           <button
             key={totalPages}
             className={`px-3 py-1 rounded ${
-              currentPage === totalPages ? 'bg-primary-green text-white' : 'bg-gray-200 hover:bg-gray-300'
+              currentPage === totalPages
+                ? 'bg-primary-green !text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => onPageChange(totalPages)}
           >
@@ -88,13 +104,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     <div className="flex items-center space-x-2">
       {/* Previous Button */}
       <button
-        className={`px-3 py-1 rounded text-inactive ${
-          currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-300 hover:text-primary'
+        className={`px-3 py-1 rounded !text-inactive ${
+          currentPage === 1
+            ? 'cursor-not-allowed opacity-50'
+            : 'hover:bg-gray-300 hover:text-primary'
         }`}
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <ChevronLeft/>
+        <ChevronLeft />
       </button>
 
       {/* Page Numbers */}
@@ -102,13 +120,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
       {/* Next Button */}
       <button
-        className={`px-3 py-1 rounded text-inactive ${
-          currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-300 hover:text-primary'
+        className={`px-3 py-1 rounded !text-inactive ${
+          currentPage === totalPages
+            ? 'cursor-not-allowed opacity-50'
+            : 'hover:bg-gray-300 hover:text-primary'
         }`}
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <ChevronRight/>
+        <ChevronRight />
       </button>
     </div>
   );

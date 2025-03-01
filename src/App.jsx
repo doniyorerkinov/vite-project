@@ -9,9 +9,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard/index';
 import Orders from './pages/Orders/index';
-import Menu from "./pages/Menu/index"
-import Client from "./pages/Client/index"
-import Employees from "./pages/Employees/index"
+import Menu from './pages/Menu/index';
+import Client from './pages/Client/index';
+import Employees from './pages/Employees/index';
 
 const router = createBrowserRouter([
   {
@@ -28,27 +28,27 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Dashboard />,
-        handle: { title: "Dashboard" },
+        handle: { title: 'Dashboard' },
       },
       {
         path: '/menu',
         element: <Menu />,
-        handle: { title: "Menu" },
+        handle: { title: 'Menu' },
       },
       {
         path: '/orders',
         element: <Orders />,
-        handle: { title: "Orders" },
+        handle: { title: 'Orders' },
       },
       {
         path: '/client',
         element: <Client />,
-        handle: { title: "Client" },
+        handle: { title: 'Client' },
       },
       {
         path: '/employees',
         element: <Employees />,
-        handle: { title: "Employees" },
+        handle: { title: 'Employees' },
       },
     ],
   },
