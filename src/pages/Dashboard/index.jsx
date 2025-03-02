@@ -30,15 +30,7 @@ function Dashboard() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-0">
         {/* Responsive grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-          {/* Map over the cards array */}
-          {cards.map((card, index) => (
-            <DashboardCard
-              key={index} // Use index as the key (or a unique identifier if available)
-              url={card.url}
-              icon={card.icon}
-              title={card.title}
-            />
-          ))}
+          
         </div>
       </div>
     </div>

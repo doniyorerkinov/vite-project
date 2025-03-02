@@ -8,6 +8,7 @@ import EmployeeEdit from './Edit';
 import Search from '../../components/Base/Search';
 import Calendar from '../../components/Base/Calendar';
 import { Edit, Plus, Trash } from 'lucide-react';
+import Loader from '../../components/Base/Loader';
 
 const Employees = () => {
   const [tableData, setTableData] = useState([]);
@@ -170,9 +171,9 @@ const Employees = () => {
       </Breadcrumbs>
 
       {loading ? (
-        <div className="min-h-60">
-          <p>Loading...</p>
-        </div>
+        <div className="min-h-60 w-full flex justify-center items-center scale-150">
+        <Loader />
+      </div>
       ) : (
         <>
           {/* Table */}
