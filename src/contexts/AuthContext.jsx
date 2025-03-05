@@ -9,27 +9,21 @@ export const AuthProvider = ({ children }) => {
   });
   const login = async (phone_number, password) => {
     try {
-      const res = await ApiService.post(`/accounts/access-token/`, {
+      return await ApiService.post(`/accounts/access-token/`, {
         phone_number,
         password,
-      });
-
-      if (!res.ok) {
-        // ✅ Handle HTTP errors (like 401 Unauthorized)
-        const errorText = await res.text();
-        throw new Error(`Login failed: ${errorText || res.statusText}`);
-      }
-
-      const data = await res.json();
-
-      if (data?.accessToken) {
-        // ✅ Use optional chaining to safely access `accessToken`
-        setUser(data);
-        localStorage.setItem('user', JSON.stringify(data));
-        return data;
-      } else {
-        throw new Error('Invalid login response: No access token provided');
-      }
+      })
+        .then((res) => {
+          // ✅ Use optional chaining to safely access `accessToken`
+          setUser(res);
+          localStorage.setItem('access_token', res?.access);
+          localStorage.setItem('refresh_token', res?.refresh);
+          localStorage.setItem('user', JSON.stringify(res?.user_data));
+          return res;
+        })
+        .catch((error) => {
+          throw new Error(`Login failed: ${error || error.statusText}`);
+        });
     } catch (error) {
       console.error('Login error:', error.message || error);
       throw error; // ✅ Ensure calling function can catch the error

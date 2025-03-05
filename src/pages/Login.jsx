@@ -16,10 +16,12 @@ const Login = () => {
     setLoading(true);
     try {
       // Here you can pass user-entered username and password
-      await login(username, password);
-      // Redirect to the main page upon successful login
-      setLoading(false);
-      navigate('/');
+      const res = await login(username, password);
+      if (res?.access) {
+        // Redirect to the main page upon successful login
+        setLoading(false);
+        navigate('/');
+      }
     } catch (err) {
       setError('Login failed. Please check your credentials.');
       setLoading(false);
