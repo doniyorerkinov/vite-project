@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Create an Axios instance with a base URL
 const apiClient = axios.create({
-  baseURL: 'https://dummyjson.com', // Base URL for all requests
+  baseURL: API_BASE_URL, // Base URL for all requests
   headers: {
     'Content-Type': 'application/json',
   },

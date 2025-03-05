@@ -8,13 +8,11 @@ export default defineConfig({
   server: {
     port: '3000',
     proxy: {
-      // "/api": {
-      //   target: "https://dummyjson.com",
-      //   changeOrigin: true,
-      //   secure: false,
-      //   // Remove the /api prefix when forwarding the request
-      //   rewrite: (path) => path.replace(/^\/api/, ""),
-      // },
+      '/api': {
+        target: 'http://167.86.104.168',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });
