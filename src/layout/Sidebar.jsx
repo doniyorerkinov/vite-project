@@ -5,12 +5,12 @@ import { links } from './menu';
 
 function Sidebar() {
   return (
-    <div className="fixed top-0 left-0 w-64 h-screen bg-white border-r border-slate-200 text-primary p-4 z-40">
+    <div className="fixed top-0 left-0 w-64 h-screen bg-white border-r border-slate-200 text-primary p-4 z-50">
       <div className="size-20 flex justify-center items-center mx-auto rounded-full shadow-lg bg-sky-100">
         <Truck size={40} className="mx-auto" />
       </div>
       <div className="flex flex-col gap-3 mt-8">
-        {links.map(({ to, label, Icon }) => (
+        {links.map(({ to, label, Icon, hasRightIcon, RightIcon }) => (
           <NavLink
             key={to}
             to={to}
@@ -21,10 +21,21 @@ function Sidebar() {
             }
           >
             {({ isActive }) => (
-              <>
-                <Icon size={20} className={`mb-1 ${isActive ? 'text-primary' : 'text-inactive'}`} />
-                {label}
-              </>
+              <div className="flex items-center justify-between w-full gap-2">
+                <div className="flex items-center gap-2">
+                  <Icon
+                    size={20}
+                    className={`mb-1 ${isActive ? 'text-primary' : 'text-inactive'}`}
+                  />
+                  {label}
+                </div>
+                {hasRightIcon ? (
+                  <RightIcon
+                    size={20}
+                    className={`mb-1 ${isActive ? 'text-primary' : 'text-inactive'}`}
+                  />
+                ) : null}
+              </div>
             )}
           </NavLink>
         ))}

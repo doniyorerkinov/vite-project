@@ -5,7 +5,7 @@ import Breadcrumbs from '../../components/Breadcumbs';
 import Pagination from '../../components/Base/Pagination';
 import Search from '../../components/Base/Search';
 import Calendar from '../../components/Base/Calendar';
-import DetailsModal from './DetailsModal'
+import DetailsModal from './DetailsModal';
 const Orders = () => {
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,17 +14,17 @@ const Orders = () => {
     total_quantity: 2,
     total_price: 35000,
     mane_ball: 1.75,
-    status: "Cancelled",          // Order Status
-    main_status: "Cancelled",       // IIKO Status
-    delivery_status: "cancelled",   // Yandex Status
-    payment_status: "Cancelled",    // Payment Status
-    payment_method: "Cash",         // Payment Method
-    error_reason: "",
-    created_at: "2024-07-03 14:56:25",
+    status: 'Cancelled', // Order Status
+    main_status: 'Cancelled', // IIKO Status
+    delivery_status: 'cancelled', // Yandex Status
+    payment_status: 'Cancelled', // Payment Status
+    payment_method: 'Cash', // Payment Method
+    error_reason: '',
+    created_at: '2024-07-03 14:56:25',
   });
   const [totalRecords, setTotalRecords] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -38,130 +38,130 @@ const Orders = () => {
       total_quantity: 2,
       total_price: 35000,
       mane_ball: 1.75,
-      status: "Cancelled",          // Order Status
-      main_status: "Cancelled",       // IIKO Status
-      delivery_status: "cancelled",   // Yandex Status
-      payment_status: "Cancelled",    // Payment Status
-      payment_method: "Cash",         // Payment Method
-      error_reason: "",
-      created_at: "2024-07-03 14:56:25",
+      status: 'Cancelled', // Order Status
+      main_status: 'Cancelled', // IIKO Status
+      delivery_status: 'cancelled', // Yandex Status
+      payment_status: 'Cancelled', // Payment Status
+      payment_method: 'Cash', // Payment Method
+      error_reason: '',
+      created_at: '2024-07-03 14:56:25',
     },
     {
       id: 775,
       total_quantity: 2,
       total_price: 30000,
       mane_ball: 1.5,
-      status: "New",
-      main_status: "WaitCooking",
-      delivery_status: "cancelled_with_payment",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-07-02 14:56:25",
+      status: 'New',
+      main_status: 'WaitCooking',
+      delivery_status: 'cancelled_with_payment',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-07-02 14:56:25',
     },
     {
       id: 772,
       total_quantity: 1,
       total_price: 15000,
       mane_ball: 0.75,
-      status: "New",
-      main_status: "WaitCooking",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-07-01 10:00:00",
+      status: 'New',
+      main_status: 'WaitCooking',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-07-01 10:00:00',
     },
     {
       id: 744,
       total_quantity: 1,
       total_price: 25000,
       mane_ball: 1.25,
-      status: "New",
-      main_status: "CookingCompleted",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-30 09:30:00",
+      status: 'New',
+      main_status: 'CookingCompleted',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-30 09:30:00',
     },
     {
       id: 743,
       total_quantity: 1,
       total_price: 25000,
       mane_ball: 1.25,
-      status: "New",
-      main_status: "New",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-29 15:20:00",
+      status: 'New',
+      main_status: 'New',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-29 15:20:00',
     },
     {
       id: 742,
       total_quantity: 1,
       total_price: 25000,
       mane_ball: 1.25,
-      status: "New",
-      main_status: "New",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-28 11:45:00",
+      status: 'New',
+      main_status: 'New',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-28 11:45:00',
     },
     {
       id: 741,
       total_quantity: 1,
       total_price: 25000,
       mane_ball: 1.25,
-      status: "New",
-      main_status: "New",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-27 16:10:00",
+      status: 'New',
+      main_status: 'New',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-27 16:10:00',
     },
     {
       id: 726,
       total_quantity: 1,
       total_price: 15000,
       mane_ball: 0.75,
-      status: "New",
-      main_status: "WaitCooking",
-      delivery_status: "new",
-      payment_status: "Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-26 13:00:00",
+      status: 'New',
+      main_status: 'WaitCooking',
+      delivery_status: 'new',
+      payment_status: 'Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-26 13:00:00',
     },
     {
       id: 725,
       total_quantity: 1,
       total_price: 20000,
       mane_ball: 1,
-      status: "New",
-      main_status: "CookingCompleted",
-      delivery_status: "new",
-      payment_status: "Not Paid",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-25 08:30:00",
+      status: 'New',
+      main_status: 'CookingCompleted',
+      delivery_status: 'new',
+      payment_status: 'Not Paid',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-25 08:30:00',
     },
     {
       id: 724,
       total_quantity: 1,
       total_price: 15000,
       mane_ball: 0.75,
-      status: "Cancelled",
-      main_status: "Cancelled",
-      delivery_status: "cancelled",
-      payment_status: "Cancelled",
-      payment_method: "Cash",
-      error_reason: "",
-      created_at: "2024-06-24 12:00:00",
+      status: 'Cancelled',
+      main_status: 'Cancelled',
+      delivery_status: 'cancelled',
+      payment_status: 'Cancelled',
+      payment_method: 'Cash',
+      error_reason: '',
+      created_at: '2024-06-24 12:00:00',
     },
   ];
 
@@ -251,10 +251,9 @@ const Orders = () => {
     'error_reason',
   ];
 
-
   function handleRowClick(rowData) {
-    setCurrentOrder(rowData)
-    setIsModalOpen(true)
+    setCurrentOrder(rowData);
+    setIsModalOpen(true);
   }
   return (
     <div>
@@ -276,7 +275,7 @@ const Orders = () => {
         headers={headers}
         keys={keys}
         data={tableData}
-        onRowClick={(rowData) =>  handleRowClick(rowData)}
+        onRowClick={(rowData) => handleRowClick(rowData)}
       />
 
       <div className="flex justify-between items-center mb-4 bg-white p-4">
@@ -291,9 +290,9 @@ const Orders = () => {
         />
       </div>
       <DetailsModal
-      isOpen={isModalOpen}
-      onClose={() =>  setIsModalOpen(false)}
-      detail={currentOrder}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        detail={currentOrder}
       />
     </div>
   );
