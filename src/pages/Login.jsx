@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, use } from 'react';
 import { useNavigate } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 import { LoaderPinwheel } from 'lucide-react';
@@ -6,8 +6,8 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const [username, setUsername] = useState('emilys');
-  const [password, setPassword] = useState('emilyspass');
+  const [username, setUsername] = useState('998932429262');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   // For demonstration, you can hardcode credentials or create input fields.
@@ -16,7 +16,7 @@ const Login = () => {
     setLoading(true);
     try {
       // Here you can pass user-entered username and password
-      await login('emilys', 'emilyspass');
+      await login(username, password);
       // Redirect to the main page upon successful login
       setLoading(false);
       navigate('/');

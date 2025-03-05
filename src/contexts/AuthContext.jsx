@@ -10,15 +10,14 @@ export const AuthProvider = ({ children }) => {
   });
 
   // Function to perform login (using dummyjson API)
-  const login = async (username, password) => {
+  const login = async (phone_number, password) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
+      const res = await fetch(`${API_BASE_URL}/accounts/access-token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username, // or hardcode 'emilys'
-          password, // or hardcode 'emilyspass'
-          expiresInMins: 30,
+          phone_number,
+          password,
         }),
         credentials: 'include',
       });
