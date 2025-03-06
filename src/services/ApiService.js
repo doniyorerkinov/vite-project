@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 });
 
-// Add request interceptor to add token to requests
+// Request interceptor to add the token
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
   if (token) {
@@ -18,42 +18,32 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Add response interceptor to handle token refresh
+// Response interceptor to handle token refresh
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
-    // If error is 401 and we haven't tried to refresh token yet
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) {
           throw new Error('No refresh token available');
         }
-
-        // Call refresh token endpoint
         const response = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
           refresh: refreshToken,
         });
-
         const { access } = response.data;
         localStorage.setItem('access_token', access);
-
-        // Update the original request with new token
         originalRequest.headers.Authorization = `Bearer ${access}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        // If refresh token fails, logout user
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
   }
 );
@@ -70,9 +60,9 @@ class ApiService {
   }
 
   // Generic GET request
-  async get(endpoint) {
+  async get(endpoint, config = {}) {
     try {
-      const response = await apiClient.get(endpoint);
+      const response = await apiClient.get(endpoint, config);
       return response.data;
     } catch (error) {
       console.error(`Error fetching data from ${endpoint}:`, error);
@@ -80,10 +70,10 @@ class ApiService {
     }
   }
 
-  // Generic POST request
-  async post(endpoint, data) {
+  // Generic POST request with optional config
+  async post(endpoint, data, config = {}) {
     try {
-      const response = await apiClient.post(endpoint, data);
+      const response = await apiClient.post(endpoint, data, config);
       return response.data;
     } catch (error) {
       console.error(`Error posting data to ${endpoint}:`, error);
@@ -91,10 +81,10 @@ class ApiService {
     }
   }
 
-  // Generic PUT request
-  async put(endpoint, data) {
+  // Generic PUT request with optional config
+  async put(endpoint, data, config = {}) {
     try {
-      const response = await apiClient.put(endpoint, data);
+      const response = await apiClient.put(endpoint, data, config);
       return response.data;
     } catch (error) {
       console.error(`Error updating data at ${endpoint}:`, error);
@@ -102,10 +92,21 @@ class ApiService {
     }
   }
 
-  // Generic DELETE request
-  async delete(endpoint) {
+  // Generic PATCH request with optional config
+  async patch(endpoint, data, config = {}) {
     try {
-      const response = await apiClient.delete(endpoint);
+      const response = await apiClient.patch(endpoint, data, config);
+      return response.data;
+    } catch (error) {
+      console.error(`Error patching data at ${endpoint}:`, error);
+      throw error;
+    }
+  }
+
+  // Generic DELETE request with optional config
+  async delete(endpoint, config = {}) {
+    try {
+      const response = await apiClient.delete(endpoint, config);
       return response.data;
     } catch (error) {
       console.error(`Error deleting data at ${endpoint}:`, error);
