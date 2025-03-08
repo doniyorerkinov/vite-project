@@ -1,9 +1,8 @@
-'use client';
-
 import { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 
 const Modal = ({ isOpen, onClose, title, children, width = 'max-w-md' }) => {
-  // Close modal when Escape key is pressed
+  // Close modal when Escape key is pressed and disable body scroll when open
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === 'Escape' && isOpen) {
@@ -13,7 +12,6 @@ const Modal = ({ isOpen, onClose, title, children, width = 'max-w-md' }) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscKey);
-      // Prevent scrolling of the body when modal is open
       document.body.style.overflow = 'hidden';
     }
 
@@ -32,7 +30,7 @@ const Modal = ({ isOpen, onClose, title, children, width = 'max-w-md' }) => {
     }
   };
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 bg-opacity-50"
       onClick={handleOverlayClick}
@@ -40,7 +38,6 @@ const Modal = ({ isOpen, onClose, title, children, width = 'max-w-md' }) => {
       <div
         className={`bg-white rounded-lg shadow-xl ${width} w-full mx-4 relative`}
       >
-        {/* Modal header */}
         {title && (
           <div className="flex justify-between items-center p-4 border-b">
             <h2 className="text-xl font-semibold">{title}</h2>
@@ -66,12 +63,16 @@ const Modal = ({ isOpen, onClose, title, children, width = 'max-w-md' }) => {
             </button>
           </div>
         )}
-
-        {/* Modal content */}
         <div className="p-4">{children}</div>
       </div>
     </div>
   );
+
+  // Use the <main> tag as the container for the modal.
+  // Fallback to document.body if <main> is not found.
+  const container = document.querySelector('main') || document.body;
+
+  return ReactDOM.createPortal(modalContent, container);
 };
 
 export default Modal;

@@ -3,101 +3,30 @@ import CategoryAddModal from './Widgets/CategoryAddModa';
 import AddMenu from './Widgets/AddMenu';
 import DeleteConfirmationModal from '../../components/Base/DeleteConfirmationModal';
 import { useEffect, useRef, useState } from 'react';
-import apiService from '../../services/apiService';
-
-const DEFAULT_IMAGE = '/placeholder.webp'; // Ensure this image is in your public folder
-const CSRF_TOKEN =
-  'j2O7Gir5vVNbh6Lskm7xSOnduer9y7w150MdoBSwmf1cSmFpzJaScTZLnPoqqWko'; // Replace with your actual CSRF token
+import { useMenuStore } from '../../store/menuStore';
 
 function Menu() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    categories,
+    products,
+    loading,
+    fetchCategories,
+    fetchProducts,
+    deleteCategory,
+  } = useMenuStore();
+
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  const [openCategoryId, setOpenCategoryId] = useState(null); // Track dropdown open state
+  const [openCategoryId, setOpenCategoryId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteCategoryId, setDeleteCategoryId] = useState(null);
   const modalRef = useRef(null);
 
-  // Fetch categories (using response.results)
-  const fetchCategories = async () => {
-    try {
-      const response = await apiService.get('/products/admin/categories/');
-      console.log(response);
-      const updatedCategories = response.results.map((category) => ({
-        ...category,
-        image: category.image || DEFAULT_IMAGE,
-      }));
-      setCategories(updatedCategories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      setCategories([]);
-    }
-  };
-
-  // Fetch products
-  const fetchProducts = async () => {
-    try {
-      const response = await apiService.get('/products/admin/products/');
-      console.log(response);
-      setProducts(response.results);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setProducts([]);
-    }
-  };
-
   // Handle broken image: replace with default
   const handleImageError = (event) => {
-    event.target.src = DEFAULT_IMAGE;
+    event.target.src = '/placeholder.webp';
     event.target.onerror = null;
-  };
-
-  // CRUD Operation: Create or Update Category using multipart/form-data
-  const handleSaveCategory = async (formData, categoryId) => {
-    try {
-      if (categoryId) {
-        // Update existing category using PATCH
-        await apiService.patch(
-          `/products/categories/${categoryId}/`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'X-CSRFToken': CSRF_TOKEN,
-            },
-          }
-        );
-        console.log(`Updated Category ID: ${categoryId}`);
-      } else {
-        // Create new category using POST
-        await apiService.post('/products/categories/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'X-CSRFToken': CSRF_TOKEN,
-          },
-        });
-        console.log('New Category Created');
-      }
-      fetchCategories(); // Refresh list
-    } catch (error) {
-      console.error('Error saving category:', error);
-    }
-  };
-
-  // CRUD Operation: Delete Category
-  const handleDeleteCategory = async (categoryId) => {
-    try {
-      await apiService.delete(`/products/categories/${categoryId}/`, {
-        headers: { 'X-CSRFToken': CSRF_TOKEN },
-      });
-      console.log(`Deleted Category ID: ${categoryId}`);
-      fetchCategories(); // Refresh list
-    } catch (error) {
-      console.error('Error deleting category:', error);
-    }
   };
 
   // Fetch data on mount
@@ -105,10 +34,9 @@ function Menu() {
     const fetchData = async () => {
       await fetchCategories();
       await fetchProducts();
-      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [fetchCategories, fetchProducts]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -255,7 +183,6 @@ function Menu() {
             setEditingCategory(null);
           }}
           editingCategory={editingCategory}
-          onSave={handleSaveCategory}
         />
         <AddMenu
           isMenuOpen={isMenuModalOpen}
@@ -272,7 +199,7 @@ function Menu() {
             setDeleteCategoryId(null);
           }}
           onConfirm={(id) => {
-            handleDeleteCategory(id);
+            deleteCategory(id);
             setIsDeleteModalOpen(false);
             setDeleteCategoryId(null);
           }}

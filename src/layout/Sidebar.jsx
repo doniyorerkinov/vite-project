@@ -5,7 +5,7 @@ import { links } from './menu';
 
 function Sidebar() {
   return (
-    <div className="fixed top-0 left-0 w-64 h-screen bg-white border-r border-slate-200 text-primary p-4 z-50">
+    <div className="fixed top-0 left-0 w-64 h-screen bg-white border-r border-slate-200 text-primary p-4 ">
       <div className="size-20 flex justify-center items-center mx-auto rounded-full shadow-lg bg-sky-100">
         <Truck size={40} className="mx-auto" />
       </div>

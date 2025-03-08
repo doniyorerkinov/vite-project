@@ -1,35 +1,37 @@
-import Modal from '../../../components/Base/Modal';
 import { useState, useEffect } from 'react';
-import { Soup, Upload } from 'lucide-react';
-
-const DEFAULT_IMAGE = '/placeholder.webp';
+import { Soup } from 'lucide-react';
+import apiService from '../../../services/apiService';
+import Modal from '../../../components/Base/Modal';
+import { useMenuStore } from '../../../store/menuStore';
 
 function CategoryAddModal({
   isCategoryOpen,
   onCategoryClose,
-  editingCategory,
-  onSave,
+  editingCategory = null,
 }) {
+  const { fetchCategories } = useMenuStore();
+
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Pre-fill form fields if editing an existing category
+  // Reset form fields when modal opens or when editing changes
   useEffect(() => {
-    if (editingCategory) {
-      setName(editingCategory.name || '');
-      setImage(null); // Force re-selection if desired
-      // Show existing image if available; otherwise, leave preview null
-      setPreviewUrl(editingCategory.image || null);
-    } else {
-      setName('');
-      setImage(null);
-      setPreviewUrl(null);
+    if (isCategoryOpen) {
+      if (editingCategory) {
+        setName(editingCategory.name || '');
+        setImage(null);
+        setPreviewUrl(editingCategory.image || null);
+      } else {
+        setName('');
+        setImage(null);
+        setPreviewUrl(null);
+      }
+      setError('');
+      setIsSubmitting(false);
     }
-    setError('');
-    setIsSubmitting(false);
   }, [editingCategory, isCategoryOpen]);
 
   const handleImageChange = (event) => {
@@ -43,20 +45,19 @@ function CategoryAddModal({
       return;
     }
 
-    // Validate file size (max 50MB as per design)
-    const maxSize = 52428800; // 50MB in bytes
-    if (file.size > maxSize) {
-      alert("Fayl o'lchami 50MB dan katta bo'lishi kerak emas.");
+    // Validate file size (max 10MB)
+    if (file.size / (1024 * 1024) > 10) {
+      alert("Fayl o'lchami 10MB dan katta bo'lishi kerak emas.");
       return;
     }
     setImage(file);
 
-    // Create preview URL for the uploaded image
+    // Create and set preview URL
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
   };
 
-  // Cleanup preview URL on unmount or when previewUrl changes
+  // Cleanup preview URL on unmount or when preview changes
   useEffect(() => {
     return () => {
       if (previewUrl && typeof previewUrl === 'string') {
@@ -70,20 +71,39 @@ function CategoryAddModal({
     setIsSubmitting(true);
     setError('');
 
-    // Create FormData for multipart/form-data upload
     const formData = new FormData();
     formData.append('name', name);
     if (image) {
       formData.append('image', image);
     }
 
+    const categoryId = editingCategory ? editingCategory.id : null;
+
     try {
-      await onSave(formData, editingCategory ? editingCategory.id : null);
+      if (categoryId) {
+        await apiService.patch(
+          `/products/categories/${categoryId}/`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+      } else {
+        await apiService.post('/products/categories/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      fetchCategories();
       setName('');
       setImage(null);
       setPreviewUrl(null);
       onCategoryClose();
     } catch (err) {
+      console.error('Error saving category:', err);
       setError("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
     } finally {
       setIsSubmitting(false);
@@ -94,17 +114,17 @@ function CategoryAddModal({
     <Modal
       isOpen={isCategoryOpen}
       onClose={onCategoryClose}
-      title="Kategoriya qo'shish"
+      title={editingCategory ? 'Kategoriya tahrirlash' : "Kategoriya qo'shish"}
       className="p-10"
       width="max-w-lg min-w-[635px]"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* New Image Upload Section */}
-        <div className="flex flex-col gap-2 ">
+        {/* Image Upload Section */}
+        <div className="flex flex-col gap-2">
           <label className="text-sm font-medium">
             Kategoriyaga rasm biriktirish *
           </label>
-          <div className="relative w-full h-[167px] min-w-[555px] bg-gray-100 rounded-md overflow-hidden">
+          <div className="relative w-full h-[167px] min-w-[555px] bg-gray-100 rounded-md ">
             {previewUrl ? (
               <img
                 src={previewUrl}
@@ -114,12 +134,13 @@ function CategoryAddModal({
             ) : (
               <div className="flex flex-col items-center justify-center w-full h-full py-6 text-sm text-gray-600">
                 <Soup className="text-gray-500 w-10 h-10 mb-4" />
-                <span>File maksimal o'lchami 50mb</span>
+                <span>File maksimal o'lchami 10mb</span>
                 <span>Format: .jpeg, .jpg, .png, .webp</span>
               </div>
             )}
-            {/* Hidden file input with full overlay to trigger file selection */}
+            {/* Force re-mounting file input with key */}
             <input
+              key={previewUrl || 'initial'} // Use previewUrl or a static key
               id="image-upload"
               type="file"
               accept="image/jpeg,image/png,image/webp"
@@ -130,7 +151,6 @@ function CategoryAddModal({
               htmlFor="image-upload"
               className="absolute inset-0 cursor-pointer"
             ></label>
-            {/* Delete Button on Hover */}
             {previewUrl && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity">
                 <button
@@ -177,7 +197,11 @@ function CategoryAddModal({
             disabled={isSubmitting}
             className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-md disabled:opacity-50"
           >
-            {isSubmitting ? 'Loading...' : "Qo'shish"}
+            {isSubmitting
+              ? 'Loading...'
+              : editingCategory
+                ? 'Yangilash'
+                : "Qo'shish"}
           </button>
         </div>
       </form>
