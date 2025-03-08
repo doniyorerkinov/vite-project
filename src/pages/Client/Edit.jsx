@@ -137,7 +137,7 @@ const ClientEdit = ({ isOpen, onClose, client = {}, onSave }) => {
           </button>
           <button
             type="submit"
-            className="px-6 py-2 bg-red-700 text-white rounded hover:bg-red-800"
+            className="px-6 py-2 bg-red-700 !text-white rounded hover:bg-red-800"
           >
             Сохранить
           </button>

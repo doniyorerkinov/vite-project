@@ -1,6 +1,6 @@
 import { CircleMinus, Edit, EllipsisVertical, Plus, Soup } from 'lucide-react';
 import CategoryAddModal from './Widgets/CategoryAddModa';
-import AddMenu from './Widgets/AddMenu';
+import ProductAddModal from './Widgets/ProductAddModal';
 import DeleteConfirmationModal from '../../components/Base/DeleteConfirmationModal';
 import { useEffect, useRef, useState } from 'react';
 import { useMenuStore } from '../../store/menuStore';
@@ -55,7 +55,7 @@ function Menu() {
 
   return (
     <>
-      <div className="flex justify-between h-full">
+      <div className="flex justify-between h-full max-h-[calc(100vh-4rem)] overflow-hidden">
         {/* Main Section */}
         <div className="h-full w-full flex justify-center items-center">
           <div className="flex flex-col items-center gap-6 w-[316px]">
@@ -72,7 +72,7 @@ function Menu() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 overflow-auto">
                 {products.map((product) => (
                   <div
                     key={product.id}
@@ -96,8 +96,8 @@ function Menu() {
         </div>
 
         {/* Right Sidebar - Categories List */}
-        <div className="w-[345px] h-full bg-white p-4">
-          <div className="flex flex-col gap-4">
+        <div className="w-[345px] h-full bg-white p-4 ">
+          <div className="flex flex-col gap-4 h-full">
             <div className="flex flex-col gap-4">
               <span className="text-lg font-semibold">Категории</span>
               <button
@@ -111,7 +111,7 @@ function Menu() {
                 Добавить категорию
               </button>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 overflow-auto h-full">
               {loading ? (
                 <div>Loading categories...</div>
               ) : categories.length === 0 ? (
@@ -184,9 +184,9 @@ function Menu() {
           }}
           editingCategory={editingCategory}
         />
-        <AddMenu
-          isMenuOpen={isMenuModalOpen}
-          onMenuClose={() => setIsMenuModalOpen(false)}
+        <ProductAddModal
+          isOpen={isMenuModalOpen}
+          onClose={() => setIsMenuModalOpen(false)}
         />
       </div>
 

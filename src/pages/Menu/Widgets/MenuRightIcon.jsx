@@ -1,7 +1,7 @@
 import { LayoutGrid, Plus, Soup } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../components/Base/Modal';
-import AddMenu from './AddMenu';
+import ProductAddModal from './ProductAddModal';
 import apiService from '../../../services/apiService';
 import { useMenuStore } from '../../../store/menuStore';
 
@@ -227,7 +227,7 @@ function MenuRightIcon() {
                         setImage(null);
                         setPreviewUrl(null);
                       }}
-                      className="bg-red-600 text-white px-4 py-2 rounded"
+                      className="bg-red-600 !text-white px-4 py-2 rounded"
                     >
                       Delete
                     </button>
@@ -277,9 +277,9 @@ function MenuRightIcon() {
       )}
 
       {/* AddMenu modal remains unchanged */}
-      <AddMenu
-        isMenuOpen={isMenuModalOpen}
-        onMenuClose={() => setIsMenuModalOpen(false)}
+      <ProductAddModal
+        isOpen={isMenuModalOpen}
+        onClose={() => setIsMenuModalOpen(false)}
       />
     </div>
   );

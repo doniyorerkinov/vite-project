@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-
-import apiService from '../services/apiService'; // adjust the path as needed
+import apiService from '../services/apiService';
 
 const DEFAULT_IMAGE = '/placeholder.webp';
 
@@ -9,7 +8,7 @@ export const useMenuStore = create((set, get) => ({
   products: [],
   loading: false,
 
-  // Fetch categories from the backend and update state
+  // Categories
   fetchCategories: async () => {
     set({ loading: true });
     try {
@@ -27,7 +26,7 @@ export const useMenuStore = create((set, get) => ({
     }
   },
 
-  // Fetch products from the backend and update state
+  // Products
   fetchProducts: async () => {
     set({ loading: true });
     try {
@@ -41,15 +40,45 @@ export const useMenuStore = create((set, get) => ({
     }
   },
 
-  // Delete a category and then refresh the categories list
+  // Delete category (existing code)
   deleteCategory: async (categoryId) => {
     try {
       await apiService.delete(`/products/categories/${categoryId}/`);
-      console.log(`Deleted Category ID: ${categoryId}`);
-      // Refresh categories after deletion
       await get().fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
+    }
+  },
+
+  // Product CRUD actions
+  addProduct: async (productData) => {
+    try {
+      await apiService.post('/products/', productData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      await get().fetchProducts();
+    } catch (error) {
+      console.error('Error adding product:', error);
+    }
+  },
+
+  updateProduct: async (productId, productData) => {
+    try {
+      await apiService.patch(`/products/${productId}/`, productData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      await get().fetchProducts();
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  },
+
+  deleteProduct: async (productId) => {
+    try {
+      await apiService.delete(`/products/${productId}/`);
+      await get().fetchProducts();
+    } catch (error) {
+      console.error('Error deleting product:', error);
     }
   },
 }));

@@ -277,7 +277,7 @@ const EmployeeEdit = ({ isOpen, onClose, employee = {}, onSave }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800"
+            className="px-4 py-2 bg-red-700 !text-white rounded hover:bg-red-800"
           >
             Добавить
           </button>

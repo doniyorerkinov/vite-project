@@ -159,7 +159,7 @@ function CategoryAddModal({
                     setImage(null);
                     setPreviewUrl(null);
                   }}
-                  className="bg-red-600 text-white px-4 py-2 rounded"
+                  className="bg-red-600 !text-white px-4 py-2 rounded"
                 >
                   Delete
                 </button>
@@ -195,7 +195,7 @@ function CategoryAddModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-md disabled:opacity-50"
+            className="bg-red-700 hover:bg-red-800 !text-white px-6 py-2 rounded-md disabled:opacity-50"
           >
             {isSubmitting
               ? 'Loading...'
